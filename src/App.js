@@ -1,23 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
-
+import logo from "./logo.svg";
+import "./App.css";
+import Bucket from "./components/bucket";
+import { useState } from "react";
+import { Auth } from "./config/firebase";
+import SignUp from "./components/signUp";
+import Login from "./components/login";
+import Logout from "./components/logout";
+function getMethod(method) {
+  switch (method) {
+    case "login":
+      return <Login />;
+      break;
+    case "signup":
+      return <SignUp />;
+      break;
+    default:
+      break;
+  }
+}
 function App() {
-  return (
+  const [user, setUser] = useState(false);
+  const [method, setMethod] = useState("login");
+
+  return user ? (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Bucket />
+      <Logout nullUser={setUser} />
+    </div>
+  ) : (
+    <div className="App">
+      {method == "login" && (
+        <Login createAccount={() => setMethod("sign up")} getUser={setUser} />
+      )}
+      {method == "sign up" && (
+        <SignUp getUser={setUser} login={() => setMethod("login")} />
+      )}
     </div>
   );
 }

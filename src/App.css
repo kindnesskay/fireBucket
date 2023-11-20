@@ -1,18 +1,75 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+}
+
 .App {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  font-family: "Courier New", Courier, monospace;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 5px;
+  width: 100%;
+  max-width: 250px;
+  border: 1px solid gray;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+ul {
+  padding: 10px;
+  list-style: none;
+  width: 100%;
+  max-width: 500px;
+  display: grid;
+  grid-template-columns: repeat(2, 200px);
+  gap: 5px;
+}
+.activity {
+  padding: 5px;
+  display: flex;
+  border: 1px solid grey;
+  height: 50px;
+  width: 200px;
+  align-items: center;
+  justify-content: space-between;
+}
+.activity button {
+  padding: 5px;
+  height: 30px;
+  width: 50px;
+}
+input,
+button {
+  width: 100%;
+  max-width: 150px;
+  padding: 10px;
+}
+input {
+  font-family: "Courier New", Courier, monospace;
+}
+@media screen and (max-width: 400px) {
+  ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .activity {
+    flex-direction: column;
+    height: 80px;
+  }
+  .activity p {
+    width: 100%;
   }
 }
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -22,17 +79,4 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }

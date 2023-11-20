@@ -74,6 +74,7 @@ export default function Bucket() {
       </div>
 
       <ul>
+        {!items.length && <p>No item in bucket yet</p>}
         {items.map((item) => {
           return (
             <Activity

@@ -8,6 +8,7 @@ import Logout from "./components/logout";
 import Fruits from "./components/fruits";
 import Hero from "./components/hero";
 import Layout from "./components/layout";
+import Admin from "./components/admin";
 function getMethod(method) {
   switch (method) {
     case "login":
@@ -49,10 +50,9 @@ function App() {
     setMethod("sign up");
   };
   return user ? (
-    <div className="App">
-      <Bucket />
-      <Logout nullUser={setUser} />
-    </div>
+    <Layout>
+      <Admin user={setUser} />
+    </Layout>
   ) : (
     <Layout
       handleHome={handHomeRoute}

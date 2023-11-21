@@ -1,6 +1,7 @@
 import { IconButton, Button } from "@mui/material";
 import { Add } from "@mui/icons-material";
 function Card({ name, price, image }) {
+  if (!image) image = { src: "/orange.jpg", name: "default" };
   return (
     <div
       style={{

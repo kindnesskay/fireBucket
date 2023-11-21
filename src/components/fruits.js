@@ -1,84 +1,36 @@
+import { collection, getDocs } from "firebase/firestore";
 import Card from "./card";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { db } from "../config/firebase";
 
-let test = [
-  {
-    image: { src: "/orange.jpg", name: "orange" },
-    name: "orange",
-    price: 1200,
-    id: 1,
-  },
-  {
-    image: { src: "/orange.jpg", name: "orange" },
-    name: "orange",
-    price: 1200,
-    id: 2,
-  },
-  {
-    image: { src: "/orange.jpg", name: "orange" },
-    name: "orange",
-    price: 1200,
-    id: 3,
-  },
-  {
-    image: { src: "/orange.jpg", name: "orange" },
-    name: "orange",
-    price: 1200,
-    id: 4,
-  },
-  {
-    image: { src: "/orange.jpg", name: "orange" },
-    name: "orange",
-    price: 1200,
-    id: 5,
-  },
-  {
-    image: { src: "/orange.jpg", name: "orange" },
-    name: "orange",
-    price: 1200,
-    id: 6,
-  },
-  {
-    image: { src: "/orange.jpg", name: "orange" },
-    name: "orange",
-    price: 1200,
-    id: 7,
-  },
-  {
-    image: { src: "/orange.jpg", name: "orange" },
-    name: "orange",
-    price: 1200,
-    id: 8,
-  },
-  {
-    image: { src: "/orange.jpg", name: "orange" },
-    name: "orange",
-    price: 1200,
-    id: 9,
-  },
-  {
-    image: { src: "/orange.jpg", name: "orange" },
-    name: "orange",
-    price: 1200,
-    id: 10,
-  },
-  {
-    image: { src: "/orange.jpg", name: "orange" },
-    name: "orange",
-    price: 1200,
-    id: 11,
-  },
-  {
-    image: { src: "/orange.jpg", name: "orange" },
-    name: "orange",
-    price: 1200,
-    id: 12,
-  },
-];
 function Fruits() {
-  const [fruitsArray, setFruitsArray] = useState(test);
+  const [fruitsArray, setFruitsArray] = useState([]);
+  const docRef = collection(db, "bucket");
+
+  useEffect(() => {
+    async function fetchdata() {
+      try {
+        const data = await getDocs(docRef);
+        const filterd_data = data.docs.map((doc) => {
+          return {
+            id: doc.id,
+            name: doc.data().name,
+            price: doc.data().price,
+            image: { src: "/orange.jpg", name: doc.data().name },
+          };
+        });
+
+        setFruitsArray(filterd_data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchdata();
+  }, []);
   return (
     <div className="product_grid">
+      {!fruitsArray && <p>Nothing to display </p>}
+
       {fruitsArray.map((fruit) => (
         <Card
           key={fruit.id}

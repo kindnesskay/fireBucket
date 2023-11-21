@@ -42,7 +42,7 @@ nav {
 }
 .menu_box {
   position: absolute;
-  top: 45px;
+  top: 40px;
   background-color: var(--primary);
   height: 100vh;
   width: 120px;

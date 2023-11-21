@@ -10,7 +10,7 @@ export default function Layout({
 }) {
   const [open, setOpen] = useState(false);
   return (
-    <body>
+    <>
       <nav
         style={{
           height: "10%",
@@ -75,6 +75,6 @@ export default function Layout({
       </nav>
       {open && <div className="backdrop" onClick={() => setOpen(false)}></div>}
       <main>{children}</main>
-    </body>
+    </>
   );
 }

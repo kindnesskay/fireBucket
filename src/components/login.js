@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Auth } from "../config/firebase";
+import { Button, TextField } from "@mui/material";
 import { signInWithEmailAndPassword } from "firebase/auth";
 function Login({ createAccount, getUser }) {
   const [email, setEmail] = useState("");
@@ -15,27 +16,34 @@ function Login({ createAccount, getUser }) {
     }
   };
   return (
-    <div className="form">
-      <input
+    <div className="store_form">
+      <img src="/orange.jpg" height={80} width={80} />
+      <TextField
+        sx={{ width: "100%", maxWidth: 300 }}
         placeholder="EMAIL"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-      <input
+      <TextField
+        sx={{ width: "100%", maxWidth: 300 }}
         placeholder="PASSWORD"
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
 
-      <button
+      <Button
         onClick={handleSignIn}
-        style={{ backgroundColor: "seagreen", color: "white", border: 0 }}
+        sx={{ width: "100%", maxWidth: 300, height: 50 }}
+        variant="contained"
+        color="secondary"
       >
         LogIn
-      </button>
+      </Button>
       <p style={{ fontSize: 12 }}>Dont have an account?</p>
-      <button onClick={createAccount}>create accout</button>
+      <Button onClick={createAccount} variant="outlined" color="secondary">
+        create accout
+      </Button>
     </div>
   );
 }

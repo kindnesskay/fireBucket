@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Auth } from "../config/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { Button, TextField } from "@mui/material";
 function SignUp({ login, getUser }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -8,7 +9,7 @@ function SignUp({ login, getUser }) {
   const [pwd_error, setPwdError] = useState("");
   const handleSignUp = async () => {
     if (!email || !password || !verifyPwd) return;
-    if (password != verifyPwd) {
+    if (password !== verifyPwd) {
       setPwdError("Password do no match ");
       return;
     }
@@ -17,19 +18,23 @@ function SignUp({ login, getUser }) {
     getUser(Auth.currentUser.email);
   };
   return (
-    <div className="form">
-      <input
+    <div className="store_form">
+      <img src="/orange.jpg" height={80} width={80} />
+      <TextField
+        sx={{ width: "100%", maxWidth: 300 }}
         placeholder="EMAIL"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-      <input
+      <TextField
+        sx={{ width: "100%", maxWidth: 300 }}
         placeholder="PASSWORD"
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <input
+      <TextField
+        sx={{ width: "100%", maxWidth: 300 }}
         placeholder="verify password"
         type="password"
         value={verifyPwd}
@@ -37,14 +42,18 @@ function SignUp({ login, getUser }) {
       />
       <span style={{ fontSize: 14, color: "red" }}>{pwd_error}</span>
 
-      <button
-        style={{ backgroundColor: "seagreen", color: "white", border: 0 }}
+      <Button
+        variant="contained"
+        color="secondary"
         onClick={handleSignUp}
+        sx={{ width: "100%", maxWidth: 300, height: 50 }}
       >
         Sign up
-      </button>
+      </Button>
       <p style={{ fontSize: 12 }}>Already have an Account?</p>
-      <button onClick={login}>Login</button>
+      <Button onClick={login} variant="outlined" color="secondary">
+        Login
+      </Button>
     </div>
   );
 }

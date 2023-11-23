@@ -1,9 +1,10 @@
 import { IconButton, Button } from "@mui/material";
 import { Add } from "@mui/icons-material";
-function Card({ name, price, image }) {
+function Card({ name, price, image, handleClick }) {
   if (!image) image = { src: "/orange.jpg", name: "default" };
   return (
     <div
+      onClick={handleClick}
       style={{
         display: "flex",
         flexDirection: "column",

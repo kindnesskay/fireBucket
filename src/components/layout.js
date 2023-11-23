@@ -2,11 +2,13 @@ import { ArrowBack, Close, Shop, Menu, Search } from "@mui/icons-material";
 import { IconButton, Button } from "@mui/material";
 import MenuBox from "./menu";
 import { useState } from "react";
+import Cart from "./Cart";
 export default function Layout({
   children,
   handleHome,
   signInPress,
   loginPress,
+  handleCart,
 }) {
   const [open, setOpen] = useState(false);
   return (
@@ -43,33 +45,18 @@ export default function Layout({
           />
         )}
 
-        {/* <IconButton sx={{ width: "10%" }}>
-          <ArrowBack sx={{ color: "#fff" }} />
-        </IconButton> */}
-        {/* 
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            borderRadius: 20,
-            backgroundColor: "#fff",
-            width: "60%",
-          }}
-        >
-          <IconButton sx={{ width: "auto", maxWidth: "30%" }}>
-            <Search />
-          </IconButton>
-          <input
-            placeholder="Search"
-            type="search"
-            style={{ border: "none", maxWidth: "70%", width: "auto" }}
-          />
-        </Box> */}
         <p style={{ width: "20%" }} onClick={handleHome}>
           Fruits
         </p>
 
-        <Button variant="outlined" color="secondary" sx={{ color: "#fff" }}>
+        <Button
+          onClick={() => {
+            handleCart(true);
+          }}
+          variant="outlined"
+          color="secondary"
+          sx={{ color: "#fff" }}
+        >
           <Shop />
         </Button>
       </nav>

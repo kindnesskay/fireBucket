@@ -7,13 +7,19 @@ function Login({ createAccount, getUser }) {
   const [password, setPassword] = useState("");
   const handleSignIn = async () => {
     if (!email || !password) return;
-    try {
-      await signInWithEmailAndPassword(Auth, email, password);
-      getUser(Auth.currentUser.email);
-      console.log(Auth.currentUser.email);
-    } catch (error) {
-      console.error(error);
-    }
+
+    await signInWithEmailAndPassword(Auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        getUser(user.uid);
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error(errorCode, errorMessage);
+      });
   };
   return (
     <div className="store_form">

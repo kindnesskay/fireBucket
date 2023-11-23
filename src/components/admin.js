@@ -1,38 +1,80 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Logout from "./logout";
 import { CloudUpload } from "@mui/icons-material";
 import { Box, Typography, TextField, Button } from "@mui/material";
 import NewImageBox from "./newImageBox";
 import { addDoc, collection } from "firebase/firestore";
 import { Auth, db, storage } from "../config/firebase";
-import { ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { uid } from "uid";
 function Admin({ user }) {
+  const [imageUrl, setImageUrl] = useState("");
   const [image, setImage] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const bucketItems = collection(db, "bucket");
   const [response, setResponse] = useState("");
 
+  const handleUpload = async () => {
+    const fileFolderRef = ref(storage, `fruits/${uid() + image.name}`);
+    const uploadTask = uploadBytesResumable(fileFolderRef, image);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      },
+      (error) => {
+        console.error(error);
+        return false;
+      },
+      async () => {
+        await getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+          setImageUrl(url);
+        });
+      }
+    );
+  };
   const startUpload = async () => {
     if (!name || !price || !image) return;
     setResponse("loading..");
+    await handleImageUpload();
     try {
-      const fileFolderRef = ref(storage, `fruits/${image.name}`);
-      await uploadBytes(fileFolderRef, image);
-      await addDoc(bucketItems, {
-        name: name,
-        userID: Auth.currentUser.uid,
-        price: price,
-        imageSrc: `gs://bucket-8f9d7.appspot.com/fruits/${image.name}`,
-      });
-      setResponse("success");
-      setName("");
-      setPrice("");
     } catch (error) {
       setResponse("failed");
       console.error(error);
     }
   };
+  const handleImageUpload = async () => {
+    try {
+      await handleUpload();
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
+  const handleDb = async () => {
+    try {
+      await addDoc(bucketItems, {
+        name: name,
+        userID: Auth.currentUser.uid,
+        price: price,
+        imageSrc: imageUrl,
+      });
+      setResponse("success");
+      setName("");
+      setPrice("");
+      setImageUrl("");
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    if (!imageUrl) return;
+    handleDb();
+  }, [imageUrl]);
   return (
     <Box
       sx={{

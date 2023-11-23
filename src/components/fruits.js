@@ -1,38 +1,15 @@
-import { collection, getDocs } from "firebase/firestore";
 import Card from "./card";
-import { useEffect, useState } from "react";
-import { db } from "../config/firebase";
+import { useState } from "react";
+function Fruits({ onProductClick, products }) {
+  const [fruitsArray, setFruitsArray] = useState(products);
 
-function Fruits() {
-  const [fruitsArray, setFruitsArray] = useState([]);
-  const docRef = collection(db, "bucket");
-
-  useEffect(() => {
-    async function fetchdata() {
-      try {
-        const data = await getDocs(docRef);
-        const filterd_data = data.docs.map((doc) => {
-          return {
-            id: doc.id,
-            name: doc.data().name,
-            price: doc.data().price,
-            image: { src: "/orange.jpg", name: doc.data().name },
-          };
-        });
-
-        setFruitsArray(filterd_data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    fetchdata();
-  }, []);
   return (
     <div className="product_grid">
-      {!fruitsArray && <p>Nothing to display </p>}
+      {!fruitsArray.length && <p>Nothing to display </p>}
 
       {fruitsArray.map((fruit) => (
         <Card
+          handleClick={() => onProductClick(fruit.id)}
           key={fruit.id}
           image={fruit.image}
           name={fruit.name}

@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Auth } from "../config/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Button, TextField } from "@mui/material";
-function SignUp({ login, getUser }) {
+import { Link } from "react-router-dom";
+function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [verifyPwd, setVerfyPwd] = useState("");
@@ -15,10 +16,9 @@ function SignUp({ login, getUser }) {
     }
     setPwdError("");
     await createUserWithEmailAndPassword(Auth, email, password);
-    getUser(Auth.currentUser.email);
   };
   return (
-    <div className="store_form">
+    <form>
       <img src="/orange.jpg" height={80} width={80} />
       <TextField
         sx={{ width: "100%", maxWidth: 300 }}
@@ -51,10 +51,17 @@ function SignUp({ login, getUser }) {
         Sign up
       </Button>
       <p style={{ fontSize: 12 }}>Already have an Account?</p>
-      <Button onClick={login} variant="outlined" color="secondary">
-        Login
-      </Button>
-    </div>
+
+      <Link to="/login" style={{ width: "100%", maxWidth: 300, height: 50 }}>
+        <Button
+          sx={{ width: "100%", maxWidth: 300, height: 50 }}
+          variant="outlined"
+          color="secondary"
+        >
+          Login
+        </Button>
+      </Link>
+    </form>
   );
 }
 

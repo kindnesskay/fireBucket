@@ -1,27 +1,38 @@
-import { Close } from "@mui/icons-material";
-import { Button } from "@mui/material";
 import CartItem from "./CartItem";
+import { useState, useEffect } from "react";
+import {
+  getCartItems,
+  deleteCartItem,
+  editCart,
+  db_name,
+} from "../tools/cartActions";
 
-function Cart({ handleClose, items, handleCartButton, itemQuantity }) {
+function Cart() {
+  const [cartArray, setCartArray] = useState([]);
+  const handleChange = (id, count) => {
+    const deletFromCart = () => {
+      deleteCartItem(db_name, id, setCartArray);
+    };
+    editCart(db_name, id, count);
+    if (count == 0) return deletFromCart();
+  };
+
+  useEffect(() => {
+    let items = getCartItems(db_name);
+    setCartArray(items);
+  }, []);
   return (
-    <div className="side_panel cart">
-      <Button
-        style={{ width: 100 }}
-        variant="contained"
-        color="secondary"
-        onClick={() => handleClose(false)}
-      >
-        <Close />
-      </Button>
-      {items &&
-        items.map((item) => {
-          console.log(item.name);
+    <div style={{ width: 200 }}>
+      {!cartArray.length && (
+        <h5 style={{ textAlign: "center" }}>No item in cart</h5>
+      )}
+      {cartArray &&
+        cartArray.map((item) => {
           return (
             <CartItem
-              getQuantity={itemQuantity}
               key={item.id}
               product={item}
-              handleAddToCart={handleCartButton}
+              handleChange={handleChange}
             />
           );
         })}

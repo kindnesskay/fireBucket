@@ -1,67 +1,89 @@
-import { ArrowBack, Close, Shop, Menu, Search } from "@mui/icons-material";
-import { IconButton, Button } from "@mui/material";
-import MenuBox from "./menu";
+import { AppBar, Toolbar, IconButton, Link, Drawer } from "@mui/material";
+import { Close, Menu, Person, ShoppingCart } from "@mui/icons-material";
 import { useState } from "react";
 import Cart from "./Cart";
-export default function Layout({
-  children,
-  handleHome,
-  signInPress,
-  loginPress,
-  handleCart,
-}) {
-  const [open, setOpen] = useState(false);
+function Layout({ children }) {
+  const [menuState, setMenuState] = useState(false);
+  const [cartState, setCartState] = useState(false);
   return (
     <>
-      <nav
-        style={{
-          height: "10%",
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-          paddingRight: 10,
-          backgroundColor: "#504099",
-          justifyContent: "space-between",
-          color: "#fff",
-        }}
+      <header>
+        <AppBar color="secondary">
+          <Toolbar
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <IconButton
+              onClick={() => setMenuState(!menuState)}
+              edge="start"
+              aria-label="menu"
+              sx={{ color: "#fff" }}
+            >
+              <Menu />
+            </IconButton>
+            <Link
+              href="/"
+              underline="none"
+              sx={{ color: "#fff", fontSize: 24 }}
+            >
+              Fruits
+            </Link>
+            <Link href="/login">
+              <IconButton
+                edge="end"
+                aria-label="account"
+                sx={{ color: "#fff", width: 30 }}
+              >
+                <Person />
+              </IconButton>
+            </Link>
+            <IconButton
+              onClick={() => setCartState(!cartState)}
+              edge="end"
+              aria-label="cart"
+              sx={{ color: "#fff", width: 30 }}
+            >
+              <ShoppingCart />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+      </header>
+      <Drawer
+        anchor="left"
+        open={menuState}
+        onClose={() => setMenuState(false)}
       >
         <IconButton
-          sx={{ width: 30, color: "#fff" }}
-          onClick={() => setOpen(!open)}
+          onClick={() => setMenuState(!menuState)}
+          edge="start"
+          aria-label="menu"
+          sx={{ width: 50 }}
         >
-          {!open && <Menu />}
-          {open && <Close />}
+          <Close />
         </IconButton>
-        {open && (
-          <MenuBox
-            handleLoginPress={() => {
-              setOpen(!open);
-              loginPress();
-            }}
-            handleSignUpPress={() => {
-              setOpen(!open);
-              signInPress();
-            }}
-          />
-        )}
-
-        <p style={{ width: "20%" }} onClick={handleHome}>
-          Fruits
-        </p>
-
-        <Button
-          onClick={() => {
-            handleCart(true);
-          }}
-          variant="outlined"
-          color="secondary"
-          sx={{ color: "#fff" }}
+        <div style={{ width: 200 }}></div>
+      </Drawer>
+      <Drawer
+        anchor="right"
+        open={cartState}
+        onClose={() => setCartState(false)}
+      >
+        <IconButton
+          onClick={() => setCartState(!cartState)}
+          edge="start"
+          aria-label="menu"
+          sx={{ width: 50 }}
         >
-          <Shop />
-        </Button>
-      </nav>
-      {open && <div className="backdrop" onClick={() => setOpen(false)}></div>}
+          <Close />
+        </IconButton>
+        <Cart />
+      </Drawer>
       <main>{children}</main>
     </>
   );
 }
+
+export default Layout;
